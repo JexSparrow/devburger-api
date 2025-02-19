@@ -13,9 +13,12 @@ class Database { // Declara a classe Database, responsável por gerenciar a cone
         this.init(); // Chama o método init() dentro do construtor para inicializar a conexão com o banco de dados e os models.
     }
 
-    init() { // Define o método init(), responsável por inicializar a conexão com o banco de dados e os models.
-        this.connection = new Sequelize(configDatabase); // Cria uma nova instância do Sequelize, passando as configurações do banco de dados (importadas de configDatabase) como argumento. Esta instância representa a conexão com o banco de dados.
-        models.map((model) => model.init(this.connection)); // Itera sobre o array models (que contém o model User) e chama o método init() de cada model, passando a instância da conexão (this.connection) como argumento. Isso inicializa cada model e o associa à conexão com o banco de dados.
+    init() { 
+        this.connection = new Sequelize(configDatabase); 
+        models
+        .map((model) => model.init(this.connection))
+        .map((model) => model.associate && model.associate(this.connection.models)
+        );
     }
 }
 
