@@ -45,7 +45,7 @@ class SessionController {
             name: user.name,
             email,
             admin: user.admin,
-            token: jwt.sign({ id: user.id }, authConfig.secret, { // <-- Corrected
+            token: jwt.sign({ id: user.id, name: user.name }, authConfig.secret, { // <-- Corrected
                 expiresIn: authConfig.expiresIn, // Use expiresIn here!
             }),
             expiresIn: authConfig.expiresIn, // You can keep this for the client
