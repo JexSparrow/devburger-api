@@ -1,6 +1,7 @@
 import * as Yup from 'Yup'; // Importa a biblioteca Yup para validação de dados.
 import Product from '../models/Product';
 import Category from '../models/Category';
+import User from '../models/User';
 
 class ProductController { // Declara a classe ProductController, que contém os métodos para lidar com requisições relacionadas a produtos.
 
@@ -20,6 +21,12 @@ class ProductController { // Declara a classe ProductController, que contém os 
 
         // Se a validação passou, o código continua aqui.
         // Você adicionaria aqui a lógica para criar o produto no banco de dados.
+
+        const {admin: isAdmin} = await User.findByPk(request.userId);
+
+        if(!isAdmin){
+            return response.status(401).json()
+        }
 
         const { file } = request;
 

@@ -1,5 +1,6 @@
 import * as Yup from 'Yup'; // Importa a biblioteca Yup para validação de dados.
 import Category from '../models/Category';
+import User from '../models/User';
 
 class CategoryController { 
 
@@ -13,6 +14,12 @@ class CategoryController {
             schema.validateSync(request.body, { abortEarly: false }); // Valida os dados da requisição com o schema definido. { abortEarly: false } permite que todos os erros de validação sejam retornados.
         } catch (err) { // Captura erros de validação.
             return response.status(400).json({ error: err.errors }); // Retorna uma resposta com status 400 (Bad Request) e os erros de validação.
+        }
+
+        const {admin: isAdmin} = await User.findByPk(request.userId);
+
+        if(!isAdmin){
+            return response.status(401).json()
         }
 
         const {name} = request.body;
