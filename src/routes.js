@@ -20,6 +20,7 @@ routes.use(authMiddleware); // todas as rotas que estiverem abaixo, necessitam a
 
 routes.post('/products', upload.single('file'), ProductController.store);
 routes.get('/products-file', ProductController.index);
+routes.put('/products/:id', upload.single('file'), ProductController.update);
 
 routes.post('/categories', CategoryController.store);
 routes.get('/categories', CategoryController.index);

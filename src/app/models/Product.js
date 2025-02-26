@@ -1,4 +1,4 @@
-import Sequelize, { Model } from "sequelize";
+import Sequelize, { DataTypes, Model } from "sequelize";
 
 class Product extends Model {
     static init(sequelize) {
@@ -7,6 +7,7 @@ class Product extends Model {
                 name: Sequelize.STRING,
                 price: Sequelize.INTEGER,
                 path: Sequelize.STRING,
+                offer: DataTypes.BOOLEAN,
                 url: {
                     type: Sequelize.VIRTUAL,
                     get() {
