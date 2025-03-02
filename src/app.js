@@ -12,8 +12,9 @@ class App { // Declara a classe App, que encapsula a lógica principal da aplica
     }
 
     middlewares() { // Define o método middlewares(), responsável por configurar os middlewares da aplicação. Middlewares são funções que interceptam as requisições antes de chegarem às rotas.
-        this.app.use(express.json()) // Usa o middleware express.json(). Este middleware converte o corpo das requisições (que geralmente vem em formato JSON) em objetos JavaScript, que podem ser acessados dentro das rotas.
-        this.app.use('/products-file', express.static(resolve(__dirname, 'uploads')))
+        this.app.use(express.json()); // Usa o middleware express.json(). Este middleware converte o corpo das requisições (que geralmente vem em formato JSON) em objetos JavaScript, que podem ser acessados dentro das rotas.
+        this.app.use('/products-file', express.static(resolve(__dirname,'uploads')));
+        this.app.use('/category-file', express.static(resolve(__dirname,'uploads')));
     }
 
     routes() { // Define o método routes(), responsável por configurar as rotas da aplicação.

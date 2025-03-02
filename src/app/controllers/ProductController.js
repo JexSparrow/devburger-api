@@ -26,6 +26,7 @@ class ProductController {
 
         const { file } = request;
         const { filename: path } = file;
+        
         const { name, price, category_id, offer } = request.body;
 
         const product = await Product.create({

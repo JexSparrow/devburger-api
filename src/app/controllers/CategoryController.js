@@ -1,50 +1,109 @@
-import * as Yup from 'Yup'; // Importa a biblioteca Yup para validação de dados.
+import * as Yup from 'Yup';
 import Category from '../models/Category';
 import User from '../models/User';
 
-class CategoryController { 
-
-    async store(request, response) { // Define o método store, responsável por criar um novo produto.
-
-        const schema = Yup.object({ // Define o schema de validação para os dados do produto usando Yup.
-            name: Yup.string().required(), // O campo name é uma string obrigatória.
+class CategoryController {
+    async store(request, response) {
+        const schema = Yup.object({
+            name: Yup.string().required(),
         });
 
-        try { // Bloco try...catch para lidar com possíveis erros durante a validação.
-            schema.validateSync(request.body, { abortEarly: false }); // Valida os dados da requisição com o schema definido. { abortEarly: false } permite que todos os erros de validação sejam retornados.
-        } catch (err) { // Captura erros de validação.
-            return response.status(400).json({ error: err.errors }); // Retorna uma resposta com status 400 (Bad Request) e os erros de validação.
+        try {
+            schema.validateSync(request.body, { abortEarly: false });
+        } catch (err) {
+            return response.status(400).json({ error: err.errors });
         }
 
-        const {admin: isAdmin} = await User.findByPk(request.userId);
+        const { admin: isAdmin } = await User.findByPk(request.userId);
 
-        if(!isAdmin){
-            return response.status(401).json()
+        if (!isAdmin) {
+            return response.status(401).json();
         }
 
-        const {name} = request.body;
+        const {filename: path} = request.file
+
+        const { name } = request.body;
 
         const categoryExists = await Category.findOne({
             where: {
                 name,
-            }
+            },
         });
 
-        if (categoryExists){
-            return response.status(400).json({ error: 'Categoria já existe!'})
+        if (categoryExists) {
+            return response.status(400).json({ error: 'Categoria já existe!' });
         }
 
-        const {id} = await Category.create({
+        const { id } = await Category.create({
             name,
+            path,
         });
 
-        return response.status(201).json({id, name})
+        return response.status(201).json({ id, name });
     }
 
     async index(request, response) {
         const categories = await Category.findAll();
+        return response.json({ message: 'Todas as Categorias', categories });
+    }
 
-        return response.json({message: 'Todas as Categorias' , categories})
+    async update(request, response) {
+        const schema = Yup.object({
+            name: Yup.string(),
+        });
+    
+        try {
+            schema.validateSync(request.body, { abortEarly: false });
+        } catch (err) {
+            return response.status(400).json({ error: err.errors });
+        }
+    
+        const { admin: isAdmin } = await User.findByPk(request.userId);
+    
+        if (!isAdmin) {
+            return response.status(401).json();
+        }
+    
+        const { id } = request.params;
+    
+        const categoryExists = await Category.findByPk(id);
+    
+        if (!categoryExists) {
+            return response.status(400).json({ error: 'Certifique-se de que o ID da Categoria está correto!' });
+        }
+    
+        let path;
+        if (request.file) {
+            path = request.file.filename;
+        }
+    
+        const { name } = request.body;
+    
+        if (name) {
+            const categoryNameExists = await Category.findOne({
+                where: {
+                    name,
+                },
+            });
+    
+            if (categoryNameExists && categoryNameExists.id != +id) {
+                return response.status(400).json({ error: 'Categoria já Existe!' });
+            }
+        }
+    
+        await Category.update(
+            {
+                name,
+                path,
+            },
+            {
+                where: {
+                    id,
+                },
+            }
+        );
+    
+        return response.status(200).json({ message: 'Categoria Atualizada!' });
     }
 }
 
