@@ -37,8 +37,8 @@ class UserController { // Define a classe UserController, que contém os método
             },
         });
 
-        if (userExist){ // Se o usuário já existe...
-            return response.status(400).json({ error: 'Usuário já existe'}) // Retorna uma resposta com status 400 e a mensagem de erro.
+        if (userExist) { // Se o usuário já existe...
+            return response.status(409).json({ error: 'Usuário já existe' }) // Retorna uma resposta com status 409 e a mensagem de erro.
         }
 
         const user = await User.create({ // Cria um novo usuário no banco de dados.
