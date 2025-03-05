@@ -16,14 +16,14 @@ routes.post('/users', UserController.store);
 routes.post('/session', SessionController.store);
 
 
-routes.use(authMiddleware); // todas as rotas que estiverem abaixo, necessitam autenticação / token. Pode ser
+routes.use(authMiddleware); // todas as rotas que estiverem abaixo, necessitam autenticação / token
 
 routes.post('/products', upload.single('file'), ProductController.store);
 routes.get('/products-file', ProductController.index);
 routes.put('/products/:id', upload.single('file'), ProductController.update);
 
 routes.post('/categories', upload.single('file'), CategoryController.store);
-routes.get('/categories', CategoryController.index);
+routes.get('/categories-file', CategoryController.index);
 routes.put('/categories/:id', upload.single('file'), CategoryController.update);
 
 routes.post('/orders', OrderController.store);

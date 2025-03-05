@@ -26,7 +26,7 @@ class ProductController {
 
         const { file } = request;
         const { filename: path } = file;
-        
+
         const { name, price, category_id, offer } = request.body;
 
         const product = await Product.create({
@@ -62,7 +62,7 @@ class ProductController {
             return response.status(401).json();
         }
 
-        const {id} = request.params;
+        const { id } = request.params;
 
         const findProduct = await Product.findByPk(id);
 
@@ -84,6 +84,7 @@ class ProductController {
             category_id,
             path,
             offer,
+
         },
             {
                 where: {
@@ -96,9 +97,24 @@ class ProductController {
         return response.status(200).json({ message: 'Produto Atualizado!' });
     }
 
+    // async index(request, response) {
+    //     const products = await Product.findAll({
+
+    //         include: [
+    //             {
+    //                 model: Category,
+    //                 as: 'category',
+    //                 attributes: ['id', 'name'],
+
+    //             }
+    //         ],
+    //     });
+
+    //     return response.json(products);
+
     async index(request, response) {
         const products = await Product.findAll({
-            attributes: ['id', 'name', 'price', 'url', 'offer'],
+
             include: [{
                 model: Category,
                 as: 'category',
@@ -106,10 +122,12 @@ class ProductController {
             }],
         });
 
-        console.log({ userId: request.userId });
-
-        return response.json({ message: 'Todos os Produtos', products });
+        return response.json(products);
     }
+
 }
+
+
+
 
 export default new ProductController();
