@@ -97,20 +97,6 @@ class ProductController {
         return response.status(200).json({ message: 'Produto Atualizado!' });
     }
 
-    // async index(request, response) {
-    //     const products = await Product.findAll({
-
-    //         include: [
-    //             {
-    //                 model: Category,
-    //                 as: 'category',
-    //                 attributes: ['id', 'name'],
-
-    //             }
-    //         ],
-    //     });
-
-    //     return response.json(products);
 
     async index(request, response) {
         const products = await Product.findAll({
