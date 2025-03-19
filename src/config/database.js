@@ -11,3 +11,7 @@ module.exports = {
         underscoredAll: true, // caixa baixa , separados por underline ex: users_products
     }
 }
+
+const stripeSecretKey = 'sk_test_51R4AJ4PZrUrBoxG977J799oAsDx0hAkBOEKIi3EIi75VD1Pirl7Q5tjUm4RMB54jAcqeqwVAWiWr7edThQldQRIH00XDU9jzzi'
+
+export default stripeSecretKey;
