@@ -14,13 +14,13 @@ class OrderController {
                     id: Yup.number().required(),
                     quantity: Yup.number().required(),
                 }),
-                ),
+            ),
         });
 
-        try { 
+        try {
             await schema.validateSync(request.body, { abortEarly: false });
-        }catch (err) {
-            return response.status(400).json({ error: err.errors }); 
+        } catch (err) {
+            return response.status(400).json({ error: err.errors });
         }
 
         const { products } = request.body;
@@ -35,7 +35,7 @@ class OrderController {
             }],
         });
 
-        const formattedProducts =  findProducts.map((product) => {
+        const formattedProducts = findProducts.map((product) => {
             const productIndex = products.findIndex((item) => item.id === product.id);
 
             const newProduct = {
@@ -55,7 +55,7 @@ class OrderController {
                 id: request.userId,
                 name: request.userName,
             },
-            products: formattedProducts, 
+            products: formattedProducts,
             status: 'Pedido Realizado!'
         };
 
@@ -64,7 +64,7 @@ class OrderController {
         return response.status(201).json(createdOrder);
     }
 
-    async index(request, response){
+    async index(request, response) {
         const orders = await Order.find();
 
         return response.json(orders)
@@ -81,9 +81,9 @@ class OrderController {
             return response.status(400).json({ error: err.errors });
         }
 
-        const {admin: isAdmin} = await User.findByPk(request.userId);
+        const { admin: isAdmin } = await User.findByPk(request.userId);
 
-        if(!isAdmin){
+        if (!isAdmin) {
             return response.status(401).json()
         }
 
@@ -103,7 +103,7 @@ class OrderController {
                 return response.status(404).json({ error: "Pedido não encontrado." });
             }
 
-            return response.json({message: 'Status atualizado com Sucesso!'}); // Retorna o pedido atualizado
+            return response.json({ message: 'Status atualizado com Sucesso!' }); // Retorna o pedido atualizado
 
         } catch (err) {
             console.error("Erro ao atualizar pedido:", err);
